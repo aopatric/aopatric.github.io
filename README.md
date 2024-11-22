@@ -1,4 +1,4 @@
-I'm a third year undergraduate at MIT born and raised in East Los Angeles, CA studying Artificial Intelligence + Decision Making. Current projects are in AI@MIT's Permeate effort and an undergraduate reseach position in the Decentralized AI group at the MIT Media Lab. Interests are in 
+I'm a third year undergraduate at MIT born and raised in East Los Angeles, CA studying Artificial Intelligence + Decision Making. Current projects are in AI@MIT's Permeate effort and an undergraduate reseach position in the Decentralized AI group at the MIT Media Lab.
 
 # News
 

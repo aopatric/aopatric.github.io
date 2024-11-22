@@ -1,2 +1,6 @@
-title: Angel Ollin Patricio
-theme: minima
+theme: slate
+author: Angel Patricio
+email: aopatric@media.mit.edu
+github_username: aopatric
+linkedin_username: angelpatricio
+markdown: kramdown
