@@ -4,3 +4,6 @@ email: aopatric@media.mit.edu
 github_username: aopatric
 linkedin_username: angelpatricio
 markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
