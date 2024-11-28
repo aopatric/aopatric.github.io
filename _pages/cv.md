@@ -2,7 +2,7 @@
 layout: archive
 title: "CV"
 permalink: /cv/
-author_profile: true
+author_profile: false
 redirect_from:
   - /resume
 ---
@@ -11,54 +11,41 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* B.S. in Artificial Intelligence and Decision Making, Massachusetts Institute of Technology, expected 2026
+
+Relevant Coursework
+======
+* 6.1210 Intro to Algorithms
+* 6.1200 Math for Computer Science
+* 6.3700 Intro to Probability
+* 6.1010 Fundamentals of Programming
+* 6.3900 Introduction to Machine Learning
+* 6.4120 Computational Cognitive Science
+* 18.06 Linear Algebra
+* 6.8611 Quantitative Methods for Natural Language Processing
+* 6.7900 Machine Learning [G]
+* 6.7960 Deep Learning [G]
 
 Work experience
 ======
-* Spring 2024: Academic Pages Collaborator
-  * Github University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
-
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+* Summer 2024: MIT IMES - Undergraduate Researcher
+* Fall 2024: AvaCon - Project Contributor for AvaCon STT
+* Fall 2024: MIT Media Lab - Undergraduate Researcher
   
+
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Machine Learning
+  * training
+  * inference
+  * evaluation
+  * mlOps
+* Software Engineering
+  * JavaScript/Node.js/React.js
+  * HTML/CSS
+  * Python/flask/fastapi
+  * Julia/Gen.jl
 
 Publications
 ======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+Check back soon...
