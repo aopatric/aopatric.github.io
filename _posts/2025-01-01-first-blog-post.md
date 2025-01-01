@@ -21,7 +21,7 @@ I think some of my biggest goals are personal this year, but mostly mental/physi
 
 My biggest academic goal is to have work accepted at a conference in the year 2025, and get one step closer to my goal of grad school in machine learning.
 
-I'll be taking analysis next semester, which is honestly pretty exciting and is partially motivating my reading of Velleman's *How to Prove It*. I hope to continue doing research in AI and hopefully narrow in on my goals of RL and NLP reserch this year.
+I'll be taking analysis next semester, which is honestly pretty exciting and is partially motivating my reading of Velleman's *How to Prove It*. I hope to continue doing research in AI and hopefully narrow in on my goals of RL and NLP research this year.
 
 #### Also: predictions...
 
