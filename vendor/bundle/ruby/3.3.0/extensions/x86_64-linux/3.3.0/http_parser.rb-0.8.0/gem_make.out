@@ -1,0 +1,19 @@
+current directory: /home/saafetensors/Workspace/aopatric.github.io/vendor/bundle/ruby/3.3.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+/usr/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/saafetensors/Workspace/aopatric.github.io/vendor/bundle/ruby/3.3.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+make DESTDIR\= sitearchdir\=./.gem.20250101-161469-6d4yqh sitelibdir\=./.gem.20250101-161469-6d4yqh clean
+
+current directory: /home/saafetensors/Workspace/aopatric.github.io/vendor/bundle/ruby/3.3.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+make DESTDIR\= sitearchdir\=./.gem.20250101-161469-6d4yqh sitelibdir\=./.gem.20250101-161469-6d4yqh
+compiling ruby_http_parser.c
+compiling ryah_http_parser.c
+linking shared-object ruby_http_parser.so
+
+current directory: /home/saafetensors/Workspace/aopatric.github.io/vendor/bundle/ruby/3.3.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+make DESTDIR\= sitearchdir\=./.gem.20250101-161469-6d4yqh sitelibdir\=./.gem.20250101-161469-6d4yqh install
+/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20250101-161469-6d4yqh
+
+current directory: /home/saafetensors/Workspace/aopatric.github.io/vendor/bundle/ruby/3.3.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
+make DESTDIR\= sitearchdir\=./.gem.20250101-161469-6d4yqh sitelibdir\=./.gem.20250101-161469-6d4yqh clean
