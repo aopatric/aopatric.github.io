@@ -13,7 +13,7 @@ finished:
 released: 1976
 stars: 5
 goodreads_review:
-status: Reading
+status: queued
 ---
 
 I started reading Baby Rudin alongside my coursework this past semester taking 18.100B at MIT. I deeply appreciated the additional depth and abstraction that Rudin brought to the material, and supplemented a lot of my work throughout the semester with problems from Rudin's book for the sheer elegeance in some of the work.
