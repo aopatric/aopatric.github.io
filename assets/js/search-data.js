@@ -55,7 +55,12 @@ ninja.data = [{
             window.location.href = "/blog/2025/post/";
           
         },
-      },{id: "books-principles-of-mathematical-analysis",
+      },{id: "books-the-alignment-problem",
+          title: 'The Alignment Problem',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/alignment/";
+            },},{id: "books-principles-of-mathematical-analysis",
           title: 'Principles of Mathematical Analysis',
           description: "",
           section: "Books",handler: () => {
@@ -65,14 +70,27 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/dmls/";
+            },},{id: "books-probability-theory-and-examples",
+          title: 'Probability Theory and Examples',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/durrett/";
+            },},{id: "books-probabilistic-machine-learning",
+          title: 'Probabilistic Machine Learning',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/probml/";
             },},{id: "news-updated-the-website",
           title: 'Updated the website!',
           description: "",
-          section: "News",},{id: "projects-temp-project",
-          title: 'Temp Project',
-          description: "Blank",
+          section: "News",},{id: "news-obrag-version-0-1-0-is-now-out-on-pypi",
+          title: 'OBRAG version 0.1.0 is now out on PyPI!',
+          description: "",
+          section: "News",},{id: "projects-obrag",
+          title: 'OBRAG',
+          description: "A local Obsidian-based RAG agent for querying your aggregated knowledge base.",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/1_project/";
+              window.location.href = "/projects/obrag/";
             },},{
         id: 'social-email',
         title: 'email',
