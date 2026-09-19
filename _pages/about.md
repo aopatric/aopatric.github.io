@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: MIT + CSAIL
+subtitle: MIT AI Grad in ML Research
 
 profile:
   align: right
@@ -24,14 +24,12 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi! I'm an undergrad at MIT studying artificial intelligence + decision making. I currently do neurosymbolic reasoning research at CSAIL. 
+Hi there! I'm Angel, and I recently graduated from MIT (May 2026) with a B.S. in AI and Decision Making. I'm currently enrolled in the MEng program at MIT, and am using this Fall 2026 semester to work on independent research projects before returning to complete my thesis. At the moment, that looks like going back and revisiting [my work](https://github.com/aopatric/post-training-EoS) on the [Edge of Stability](https://arxiv.org/abs/2103.00065) phenomena for language model post-training.
 
-Previously, I worked at the Media Lab on the Camera Culture group's Project SONAR team where we built decentralized cross-platform training frameworks for edge-device federated learning with data security guarantees.
+My time as an undergrad was spent across a few different research groups across MIT. I was fortunate enough to help design and prototype a benchmark for spatial reasoning in both neurosymbolic and language-based models built around the inverse origami problem (later published by the lab as [OrigamiBench](https://icml.cc/virtual/2026/68020)) with Prof. Armando Solar-Lezama's group at CSAIL, contribute core training and communication infrastructure to a decentralized and data-private solution for federated learning ([SONAR Web](https://dl.acm.org/doi/10.1145/3737899.3768523), ACM FLEdge-AI '25, Best Presentation) with the Camera Culture group at the Media Lab, and adapt masked language modeling approaches to single-cell transcriptomics data from the CELLxGENE Census for imputation and classification with the Edelman Lab at IMES.
 
-Before that, I got my first bit of research experience at MIT's Institute for Medical Engineering and Science, where I spent a summer adapting language models for single-cell RNA sequencing data.
+Outside of my MIT-affiliated work, my personal research interests lie heavily in supervision and alignment of highly capable models. At the moment this has been limited to playing with SAEs and learning tools like nnsight and TransformerLens, as well as the overwhelming majority of my recent reading being in the mechanistic interpretability space. 
 
-Outside of that work, my personal interests are in architectures/foundation models and learning algortihms. Some of my favorite papers include [AlphaGo](https://www.nature.com/articles/nature16961), [DeepseekMath/GRPO](https://arxiv.org/abs/2402.03300), and the recent [V-JEPA 2](https://arxiv.org/abs/2506.09985) work.
-
-If I'm not working on one of the above things, I'm probably reading about one of the above things. Otherwise, I'm probably listening to something, playing something, or hanging out with my cat Cillian.
+When I'm not focused on one of the above things, I'm often doing any one of producing or DJing or consuming music, poking around with the latest AI coding tools, or just hanging out with my cat, Cillian.
 
 I'm always open to chatting and discussing both research and opportunities, so feel free to reach out!

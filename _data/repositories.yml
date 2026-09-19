@@ -4,6 +4,5 @@ github_users:
 repo_description_lines_max: 2
 
 github_repos:
-  - aopatric/notebook-ml
-  - aopatric/rolling-notes
-  - aopatric/OBRAG
+  - aopatric/post-training-EoS
+  - aopatric/aopatric.github.io
