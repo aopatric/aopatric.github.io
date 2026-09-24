@@ -9,33 +9,26 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-bookshelf",
-          title: "bookshelf",
-          description: "",
+  },{id: "nav-papers",
+          title: "papers",
+          description: "A collection of both my published work as well as the published work in which I am acknowledged.",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/books/";
+            window.location.href = "/papers/";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "Things I&#39;m working on, things I&#39;ve worked on, things I&#39;ve completed.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
           },
         },{id: "nav-blog",
           title: "blog",
           description: "",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/blog/";
-          },
-        },{id: "nav-projects",
-          title: "projects",
-          description: "A few things I&#39;ve worked on. Slightly behind real-time, these are clean write-ups about completed projects.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/projects/";
-          },
-        },{id: "nav-repositories",
-          title: "repositories",
-          description: "A few repos I&#39;d like to highlight.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/repositories/";
+            window.location.href = "/blog";
           },
         },{id: "nav-cv",
           title: "cv",
@@ -44,18 +37,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-a-first-blog-post",
-        
-          title: "a first blog post",
-        
-        description: "My first post.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/post/";
-          
-        },
-      },{id: "books-the-alignment-problem",
+        },{id: "books-the-alignment-problem",
           title: 'The Alignment Problem',
           description: "",
           section: "Books",handler: () => {
@@ -80,23 +62,17 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/probml/";
-            },},{id: "news-updated-the-website",
-          title: 'Updated the website!',
-          description: "",
-          section: "News",},{id: "news-obrag-version-0-1-0-is-now-out-on-pypi",
-          title: 'OBRAG version 0.1.0 is now out on PyPI!',
-          description: "",
-          section: "News",},{id: "projects-obrag",
-          title: 'OBRAG',
-          description: "A local Obsidian-based RAG agent for querying your aggregated knowledge base.",
+            },},{id: "projects-finding-the-edge-of-stability-for-llm-post-training",
+          title: 'Finding the Edge of Stability for LLM Post-Training',
+          description: "Investigating an extension of the Edge of Stability phenomena in the context of language model post-training. Instruction tuning task built from the Alpaca dataset, using the Pythia model suite for pre-trained, non-instruction-tuned model organisms.",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/obrag/";
+              window.location.href = "/projects/post-training-EoS/";
             },},{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
         handler: () => {
-          window.open("mailto:%61%6F%70%61%74%72%69%63@%6D%69%74.%65%64%75", "_blank");
+          window.open("mailto:%61%6F%70%61%74%72%69%63@%61%6C%75%6D.%6D%69%74.%65%64%75", "_blank");
         },
       },{
         id: 'social-github',
