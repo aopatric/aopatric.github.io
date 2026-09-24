@@ -8,8 +8,9 @@ middle_name: O.
 last_name: Patricio
 contact_note: email preferred!
 
-# don't know where this goes!
+# used as the meta/OG/Twitter description tag on any page that doesn't set its own `description`
 description: >
+  Angel Patricio — MIT MEng student researching language model alignment, post-training dynamics, and interpretability.
 
 footer_text: >
 
@@ -24,7 +25,7 @@ back_to_top: true # set to false to disable the back to top button
 
 # ----------------------------------------------------------------------------
 # Theme
-# ----------------------------------------------------------------------------backpack-
+# ----------------------------------------------------------------------------
 
 # repo color theme
 repo_theme_light: default # https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md
@@ -178,11 +179,13 @@ exclude:
   - lighthouse_results/
   - package.json
   - package-lock.json
-  - _pages/about_einstein.md
   - purgecss.config.js
   - README.md
   - readme_preview/
   - vendor
+  - _pages_archive/
+  - _posts_archive/
+  - _projects_archive/
 keep_files:
   - CNAME
   - .nojekyll
@@ -315,7 +318,7 @@ filtered_bibtex_keywords:
   ]
 
 # Maximum number of authors to be shown for each publication (more authors are visible on click)
-max_author_limit: 3 # leave blank to always show all authors
+max_author_limit: # leave blank to always show all authors
 more_authors_animation_delay: 10 # more authors are revealed on click using animation; smaller delay means faster animation
 
 # Enables publication thumbnails. If disabled, none of the publications will display thumbnails, even if specified in the bib entry.

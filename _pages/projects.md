@@ -2,10 +2,10 @@
 layout: page
 title: projects
 permalink: /projects/
-description: A few things I've worked on. Slightly behind real-time, these are clean write-ups about completed projects.
+description: Things I'm working on, things I've worked on, things I've completed.
 nav: true
-nav_order: 3
-display_categories:
+nav_order: 2
+display_categories: academic, independent
 horizontal: false
 ---
 
