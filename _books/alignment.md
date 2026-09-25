@@ -4,9 +4,9 @@ title: The Alignment Problem
 author: Brian Christian
 cover:
 olid: OL28126189M # use Open Library ID to fetch cover (if no `cover` is provided)
-isbn:  # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
+isbn: # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
 categories: HCI
-tags: 
+tags:
 buy_link:
 started: Fall 2024
 finished: Fall 2024

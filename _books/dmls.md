@@ -4,9 +4,9 @@ title: Designing Machine Learning Systems
 author: Chip Huyen
 cover:
 olid: OL36277220M # use Open Library ID to fetch cover (if no `cover` is provided)
-isbn:  # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
+isbn: # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
 categories: technical systems ML infra inference training
-tags: 
+tags:
 buy_link: https://a.co/d/jjLnJs7
 started: Summer 2025
 finished: Summer 2025

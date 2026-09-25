@@ -4,12 +4,12 @@ title: Principles of Mathematical Analysis
 author: Walter Rudin
 cover:
 olid: OL5195991M # use Open Library ID to fetch cover (if no `cover` is provided)
-isbn:  # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
+isbn: # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
 categories: foundations analysis
-tags: 
+tags:
 buy_link:
 started: Spring 2025
-finished: 
+finished:
 released: 1976
 stars: 5
 goodreads_review:

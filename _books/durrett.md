@@ -1,10 +1,10 @@
 ---
 layout: book-review
 title: Probability Theory and Examples
-author: Rick Durrett 
+author: Rick Durrett
 olid: OL3379844M # use Open Library ID to fetch cover (if no `cover` is provided)
 categories: technical probability
-tags: 
+tags:
 started: Summer 2025
 released: 2022
 stars: 5

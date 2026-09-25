@@ -56,33 +56,17 @@
     {
       "name": "Tools",
       "icon": "fa-solid fa-hashtag",
-      "keywords": [
-        "Python, Julia",
-        "Numpy, Pandas",
-        "Scikit-Learn, PyTorch",
-        "Huggingface, Vast.ai",
-        "Langchain, Ollama"
-      ]
+      "keywords": ["Python, Julia", "Numpy, Pandas", "Scikit-Learn, PyTorch", "Huggingface, Vast.ai", "Langchain, Ollama"]
     },
     {
       "name": "Topics",
       "icon": "fa-solid fa-hashtag",
-      "keywords": [
-        "Probabilistic Machine Learning",
-        "Reinforcement Learning",
-        "Deep Learning",
-        "Deep Reinforcement Learning"
-      ]
+      "keywords": ["Probabilistic Machine Learning", "Reinforcement Learning", "Deep Learning", "Deep Reinforcement Learning"]
     },
     {
       "name": "DevOps",
       "icon": "fa-solid fa-hashtag",
-      "keywords": [
-        "Git, Github",
-        "Docker, Kubernetes",
-        "AWS, Azure",
-        "Linux, Bash"
-      ]
+      "keywords": ["Git, Github", "Docker, Kubernetes", "AWS, Azure", "Linux, Bash"]
     }
   ],
   "languages": [
@@ -101,11 +85,7 @@
     {
       "name": "ML",
       "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Reinforcement Learning",
-        "World Modeling",
-        "Learning Algorithms"
-      ]
+      "keywords": ["Reinforcement Learning", "World Modeling", "Learning Algorithms"]
     }
   ],
   "projects": [

@@ -10,7 +10,7 @@ related_publications: false
 
 I decided to go ahead and build a local RAG setup to attach to Obsidian vaults. The need for such a tool came from constantly
 searching for answers to questions within my Obsidian vault that could be easily queried with natural language. To solve this issue,
-OBRAG was born. 
+OBRAG was born.
 
 For now, OBRAG exists as a python package; release version `0.1.0` is out as of this edit! You can check out the package on PyPI
 [here](https://pypi.org/project/OBRAG/0.1.0/). Limited feature set for now, but usage typically looks like a CLI call when you have a question, i.e.
