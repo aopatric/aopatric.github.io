@@ -37,7 +37,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "books-the-alignment-problem",
+        },{id: "post-fall-2026-checkpoint",
+        
+          title: "fall 2026 checkpoint",
+        
+        description: "What I&#39;ve been up to since graduating, and what&#39;s next.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/fall-update/";
+          
+        },
+      },{id: "books-the-alignment-problem",
           title: 'The Alignment Problem',
           description: "",
           section: "Books",handler: () => {
@@ -67,6 +78,11 @@ ninja.data = [{
           description: "Investigating an extension of the Edge of Stability phenomena in the context of language model post-training. Instruction tuning task built from the Alpaca dataset, using the Pythia model suite for pre-trained, non-instruction-tuned model organisms.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/post-training-EoS/";
+            },},{id: "projects-a-mechanistic-interpretability-testbed-for-reward-hacking",
+          title: 'A Mechanistic Interpretability Testbed for Reward Hacking',
+          description: "An ongoing testbed for mechanistic interpretability tools, built on a reproducible setup for RL-induced reward hacking in Qwen3-4B. Probing, activation patching, and steering, added in stages.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/qwen-steering/";
             },},{
         id: 'social-email',
         title: 'email',
