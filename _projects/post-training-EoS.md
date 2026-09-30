@@ -15,6 +15,8 @@ related_publications: false
 ended inconclusive but taught you something real. Mention that this was always an
 exploration, not something meant for publication. -->
 
+**under construction!!!**
+
 _tl;dr:_ does the training behavior of language models in post-training share a generally accepted characteristic previously observed in toy-scale models? previous attempt said no, but a revisit showed that was a weak claim. re-attempt ended inconclusively, but included rounds of iteration that taught me more about research engineering than any successful one could have.
 
 (_note_: since this revisit was meant as an exploration and less of a publication, there were no novel figures generated beyond those in `tensorboard`. figures in this writeup come from existing literature and are cited as such.)
@@ -67,7 +69,7 @@ $$
 
 The first result tells us on an extremely high level that when we are atop a _hill_ in the loss landscape, gradient descent can roll off instead of reaching the peak. This half is irrelevant to our goal of reaching the bottom of a _valley_. However, the second result tell us that when we are near a valley, curvature like $\lambda_\text{max} > \frac 2 \eta$ can create local instability causing gradient descent to over-correct and similarly, our error blows up.
 
-Nonetheless, the original [Cohen et al. (2021)](https://arxiv.org/abs/2103.00065) paper observed a two-stage phenomena including a phase of _progressive sharpening_ (wherein the local $\lambda_\text{max}$ at iteration $t$ starts low and rises monotonically to the $\frac 2 \eta$ threshold) and a phase of _stable oscillation_ (wherein the local curvature oscillates around the $\frac 2 \eta$ threshold while maintaining stability during training). This contradicted the predictions made by the second-order Taylor approximation above and raised several questions as to the nature of this phenomena, including whether or not this was an artifact of the training process or an intrinsic property to gradient descent on neural networks. Since then, much work has expanded upon the original EoS paper, asking similar questions in new contexts.
+Nonetheless, the original [Cohen et al. (2021)](https://arxiv.org/abs/2103.00065) paper observed a two-stage phenomena including a phase of _progressive sharpening_ (wherein the local $\lambda_\text{max}$ at iteration $t$ starts low and rises monotonically to the $\frac 2 \eta$ threshold) and a phase of _stable oscillation_ (wherein the local curvature oscillates around the $\frac 2 \eta$ threshold while maintaining stability during training). This contradicted the predictions made by the second-order Taylor approximation above and raised several questions as to the nature of this phenomena, including whether this was an artifact of the particular training setup or an intrinsic property to gradient descent on neural networks. Since then, much work has expanded upon the original EoS paper, asking similar questions in new contexts.
 
 <!-- FIGURE: Cohen et al. (2021) Fig. 1, sharpness rising to 2/η across several learning
 rates. Replaces the old placeholder SVG. Credit it in the caption and link arXiv:2103.00065. -->
