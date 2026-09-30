@@ -17,7 +17,7 @@ exploration, not something meant for publication. -->
 
 **under construction!!!**
 
-_tl;dr:_ does the training behavior of language models in post-training share a generally accepted characteristic previously observed in toy-scale models? previous attempt said no, but a revisit showed that was a weak claim. re-attempt ended inconclusively, but included rounds of iteration that taught me more about research engineering than any successful one could have.
+_tl;dr:_ does the training behavior of language models in post-training share a generally accepted characteristic observed in toy-scale models? previous attempt said no, but a revisit showed that was a weak claim. re-attempt ended inconclusively, but included rounds of iteration that taught me more about research engineering than any successful one could have.
 
 (_note_: since this revisit was meant as an exploration and less of a publication, there were no novel figures generated beyond those in `tensorboard`. figures in this writeup come from existing literature and are cited as such.)
 
@@ -25,18 +25,21 @@ _tl;dr:_ does the training behavior of language models in post-training share a 
 
 <!-- ~200 words. Tighten the existing intro below. -->
 
-Much of the success of modern neural networks is attributed to the wild success of learning with gradient descent (GD). In recent years, research effort has been poured into understanding the geometry of learning in neural nets trained with GD. A fruit of that effort is the established Edge of Stability phenomena, which describes a deviation observed in practice from previously established facts from statistical learning theory about learning on twice-differentiable smooth losses. The argument generally goes as follows:
+Much of the success of modern neural networks is attributed to the wild success of learning with gradient descent (GD). In recent years, a wave of research effort has been dedicated toward understanding the geometry of learning in neural nets trained with gradient descent. The Edge of Stability phenomena was named as a fruit of that effort, and describes a deviation observed in practice from a set of standard facts from the field of statistical learning theory about training on twice-differentiable losses. The argument generally goes as follows:
 
-We can take any twice-differentiable, smooth loss function $f(\theta)$ and consider a second-order Taylor approximation within some neighborhood of a stationary point $\theta^*$:
-
-$$
-f(\theta) \approx f(\theta^*) + \nabla f(\theta^*)^\top (\theta - \theta^*) + \frac 1 2 (\theta - \theta^*)^\top H (\theta - \theta^*).
-$$
-
-Since $\theta^*$ is a stationary point, $\nabla f(\theta^*) = 0$. Taking the gradient gives:
+We can take any sufficiently smooth ($\in C^2$) loss function $f(\theta)$ and consider a second-order Taylor approximation within some neighborhood of a _local minimum_ $\theta^{\ast}$:
 
 $$
-\nabla f(\theta) = \nabla f(\theta^*) + H(\theta - \theta^*) = H(\theta - \theta^*)
+\begin{align*}
+f(\theta) & =  f(\theta^{\ast}) + \nabla f(\theta^{\ast})^\top (\theta - \theta^{\ast}) + \frac 1 2 (\theta - \theta^{\ast})^\top H (\theta - \theta^{\ast}) + o(\|\theta - \theta^\ast\|^2) \\ 
+& \approx f(\theta^\ast) + \nabla f(\theta^\ast)^\top (\theta - \theta^\ast) + \frac 1 2 (\theta - \theta^\ast)^\top H (\theta - \theta^\ast)
+\end{align*}
+$$
+
+Since $\theta^{\ast}$ is a stationary point, $\nabla f(\theta^{\ast}) = 0$. Taking the gradient gives:
+
+$$
+\nabla f(\theta) = \nabla f(\theta^{\ast}) + H(\theta - \theta^{\ast}) = H(\theta - \theta^{\ast})
 $$
 
 For Hessian $H$. So consider the gradient update step:
@@ -44,32 +47,31 @@ For Hessian $H$. So consider the gradient update step:
 $$
 \begin{align*}
   \theta_{t+1} & = \theta_t - \eta \nabla f(\theta_t) \\
-  & = \theta_t - \eta H (\theta_t - \theta^*)
+  & = \theta_t - \eta H (\theta_t - \theta^{\ast})
 \end{align*}
 $$
 
-subtracting $\theta^*$ from both sides gives us our error vector to the optimum for each time step:
+subtracting $\theta^{\ast}$ from both sides lets us express this relationship in terms of the update performed by gradient descent on the _error_ vector to the optimum, $\delta_t = \theta_t - \theta^\ast$, for each time step:
 
 $$
 \begin{align*}
-  \theta_{t+1} - \theta^* & =  (\theta_t - \theta^*) - \eta H (\theta_t - \theta^*) \\
+  \theta_{t+1} - \theta^{\ast} & =  (\theta_t - \theta^{\ast}) - \eta H (\theta_t - \theta^{\ast}) \\
   \delta_{t+1} & = (I - \eta H) \delta_t.
 \end{align*}
 $$
  
-So under this second-order approximation, each gradient update scales the error vector by $(I - \eta H)$, and we can treat it like any other linear mapping. So consider the eigendirection $\nu$ of $H$ with largest eigenvalue $\lambda_\text{max}$. Along $\nu$, the error update has eigenvalue $(1 - \eta \lambda_\text{max})$. So the error relation blows up along $\nu$ iff:
+This reveals that under this second-order approximation, each gradient update scales the $\delta_t$ vector by $(I - \eta H)$, and we can treat this gradient descent update like any other linear mapping. So consider any eigendirection $\nu$ of $H$ with largest eigenvalue $\lambda_\text{max}$. Since we took $\theta^\ast$ to be a _local minimum_, the second order stationarity condition for smooth objectives forces $H \succeq 0$. A positive semi-definite (PSD) $H$ forces all of its eigenvalues $\lambda_i \geq 0$. Thus $\nu$ represents the direction along which the gradient descent update operator performs the largest magnitude scaling of $\delta_t$. For $\delta_t$ to remain stable and converge to 0 as $t \to \infty$, we need $|1 - \eta \lambda_\text{max}| < 1$, i.e., we need $\delta_t$ to shrink along every eigendirection of $H$. But:
 
 $$
 \begin{align*}
-  | 1 - \eta \lambda_\text{max} | > 1 \\
-    1 - \eta \lambda_\text{max} > 1 \quad \text{or} \quad -1 + \eta \lambda_\text{max} > 1 \\
-    \lambda_\text{max} < 0 \quad \text{or} \quad \lambda_\text{max} > \frac 2 \eta.
+  | 1 - \eta \lambda_\text{max} | < 1 & \implies 1 - \eta \lambda_\text{max} < 1 \quad \text{and} \quad -1 + \eta \lambda_\text{max} < 1 \\
+    & \implies 0 < \lambda_\text{max} \quad \text{or} \quad \lambda_\text{max} < \frac 2 \eta.
 \end{align*}
 $$
 
-The first result tells us on an extremely high level that when we are atop a _hill_ in the loss landscape, gradient descent can roll off instead of reaching the peak. This half is irrelevant to our goal of reaching the bottom of a _valley_. However, the second result tell us that when we are near a valley, curvature like $\lambda_\text{max} > \frac 2 \eta$ can create local instability causing gradient descent to over-correct and similarly, our error blows up.
+The first condition is somewhat trivial in the case that we have a non-degenerate Hessian, since it is PSD. The second condition is key; it tells us that when we are near a local minimum, curvature like $\lambda_\text{max} >= \frac 2 \eta$ can create _local instability_ causing the error vector to stagnate or even grow along $\nu$ with each training step, failing to converge.
 
-Nonetheless, the original [Cohen et al. (2021)](https://arxiv.org/abs/2103.00065) paper observed a two-stage phenomena including a phase of _progressive sharpening_ (wherein the local $\lambda_\text{max}$ at iteration $t$ starts low and rises monotonically to the $\frac 2 \eta$ threshold) and a phase of _stable oscillation_ (wherein the local curvature oscillates around the $\frac 2 \eta$ threshold while maintaining stability during training). This contradicted the predictions made by the second-order Taylor approximation above and raised several questions as to the nature of this phenomena, including whether this was an artifact of the particular training setup or an intrinsic property to gradient descent on neural networks. Since then, much work has expanded upon the original EoS paper, asking similar questions in new contexts.
+Despite this analytic result, the original [Cohen et al. (2021)](https://arxiv.org/abs/2103.00065) paper observed in practice a two-stage phenomena during training, including a phase of _progressive sharpening_ (wherein the local $\lambda_\text{max}$ at iteration $t$ starts low and rises monotonically to the $\frac 2 \eta$ threshold) and a phase of _stable oscillation_ (wherein the local curvature oscillates around the $\frac 2 \eta$ threshold while maintaining training stability). These observations contradicted the predictions made by the second-order approximation and at the time raised several questions as to the nature of this phenomena, including whether EoS is an intrinsic property to gradient descent on neural networks in practice. Since then, much work has expanded upon the original EoS paper, including many asking similar questions about learning geometry in new learning contexts.
 
 <!-- FIGURE: Cohen et al. (2021) Fig. 1, sharpness rising to 2/η across several learning
 rates. Replaces the old placeholder SVG. Credit it in the caption and link arXiv:2103.00065. -->
