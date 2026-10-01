@@ -75,7 +75,7 @@ ninja.data = [{
               window.location.href = "/books/probml/";
             },},{id: "projects-finding-the-edge-of-stability-for-llm-post-training",
           title: 'Finding the Edge of Stability for LLM Post-Training',
-          description: "Investigating an extension of the Edge of Stability phenomena in the context of language model post-training. Instruction tuning task built from the Alpaca dataset, using the Pythia model suite for pre-trained, non-instruction-tuned model organisms.",
+          description: "Revisit of my 6.7960 term project investigating the EoS phenomenon in language model post-training. Null result, but learned a ton.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/post-training-EoS/";
             },},{id: "projects-a-mechanistic-interpretability-testbed-for-reward-hacking",
