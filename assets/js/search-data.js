@@ -73,7 +73,10 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/probml/";
-            },},{id: "projects-finding-the-edge-of-stability-for-llm-post-training",
+            },},{id: "news-writeup-for-my-revisit-of-the-edge-of-stability-in-language-model-post-training-is-live-read-it-in-the-projects-section",
+          title: 'Writeup for my revisit of the Edge of Stability in language model post-training...',
+          description: "",
+          section: "News",},{id: "projects-finding-the-edge-of-stability-for-llm-post-training",
           title: 'Finding the Edge of Stability for LLM Post-Training',
           description: "Revisit of my 6.7960 term project investigating the EoS phenomenon in language model post-training. Null result, but learned a ton.",
           section: "Projects",handler: () => {
