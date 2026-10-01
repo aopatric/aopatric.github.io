@@ -3,6 +3,7 @@ layout: post
 title: A Mechanistic Interpretability Testbed for Reward Hacking
 description: An ongoing testbed for mechanistic interpretability tools, built on a reproducible setup for RL-induced reward hacking in Qwen3-4B. Probing, activation patching, and steering, added in stages.
 importance: 2
+img: /assets/img/qwen-steering/thumbnail.svg
 category: independent
 related_publications: false
 ---

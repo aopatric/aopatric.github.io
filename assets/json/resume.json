@@ -93,25 +93,35 @@
   "projects": [
     {
       "name": "Mechanistic Interpretability Testbed for Reward Hacking in Qwen3-4B",
-      "summary": "Independent project (ongoing)",
+      "summary": "Independent project (in progress)",
       "startDate": "2026-09",
       "url": "https://github.com/aopatric/qwen-steering",
       "highlights": [
         "Extended the reproducible RL-induced reward hacking setup from <a href=\"https://github.com/ariahw/rl-rewardhacking\">ariahw/rl-rewardhacking</a> for Qwen3-4B into an expandable testbed for mechanistic interpretability tools to study how reward hacking emerges in language models; implemented activation caching over rollouts via PyTorch forward hooks.",
-        "Still ongoing, and serves as a live testbed for trying out different mechanistic interpretability tools as I learn the landscape of the field ahead of grad school.",
-        "Building in stages: training linear probes on residual-stream activations to detect hacking vs. honest behavior at prompt time, and implementing activation patching to localize the responsible components and steering along probe directions to suppress hacking."
+        "Actively in development as my main project this fall, and doubles as a live testbed for trying out different mechanistic interpretability tools as I learn the landscape of the field ahead of grad school.",
+        "Building in stages on top of the cached activations: linear probes on residual-stream activations to detect hacking vs. honest behavior at prompt time, activation patching to localize the responsible components, and steering along probe directions to suppress hacking."
       ]
     },
     {
       "name": "Finding an Edge of Stability for LLM Post-Training",
-      "summary": "Course project, MIT 6.7960 Deep Learning (Fall 2025; revisited 2026)",
+      "summary": "Course project, MIT 6.7960 Deep Learning (Fall 2025); independent revisit (2026, completed)",
       "startDate": "2025-09",
-      "endDate": "2026",
+      "endDate": "2026-09",
       "url": "https://github.com/aopatric/post-training-EoS",
       "highlights": [
         "Built a PyTorch/HF pipeline tracking global and batch sharpness (top Hessian eigenvalues via PyHessian) while fine-tuning Pythia models (70M to 1.4B) on Alpaca with full SFT and LoRA, searching for the Edge of Stability (EoS) in LLM post-training. Initial experiments found no EoS signature.",
-        "Revisited the project in 2026 after finding flaws in the original measurements: rebuilt curvature tooling GPU-native in PyTorch (Hessian-vector products, batched power iteration) for a ~5× speedup over the CPU-bound original; validated against exact Hessians on small models, reference-library solvers, and invariant checks.",
-        "Established a positive control with the new tooling, confirming existing EoS results, but did not observe EoS in the full-scale experimental runs (up to 1.4B): sharpness built up early, then slowly tapered off instead of settling at a stability threshold, and near-degenerate top eigenvalues made single-eigenvalue estimates unstable. Archived."
+        "Revisited the project in 2026 after an audit showed the original setup could not distinguish \"no EoS\" from a failed measurement: rebuilt curvature tooling GPU-native in PyTorch (Hessian-vector products; power iteration and Lanczos required to agree within 1%) for a ~5× speedup over the CPU-bound original, validated against exact Hessians on small models, and moved to fp64 after finding fp32 lost ~3% of each update to rounding at fine-tuning learning rates.",
+        "Ran a from-scratch MLP positive control where top-eigenvalue sharpness overshot 2/η by 1.7–2.3× while curvature along the update direction held near 2/η, consistent with <a href=\"https://arxiv.org/abs/2608.18415\">Lee &amp; Lee (2026)</a>; added step-direction sharpness tracking in response and confirmed EoS on the control.",
+        "On pretrained Pythia-70M with full-batch GD (η = 7.5e-6), oscillation began around step 1100 and settled near 0.92× of 2/η, narrowly missing the pass criterion fixed before the run: inconclusive rather than absent. Stopped there, since testing AdamW and larger models required more compute. <a href=\"https://aopatric.github.io/projects/post-training-EoS/\">Writeup</a>."
+      ]
+    },
+    {
+      "name": "Toy Transformers",
+      "summary": "Independent project (in progress)",
+      "startDate": "2026-09",
+      "url": "https://github.com/aopatric/toy-transformers",
+      "highlights": [
+        "Notebooks replicating <a href=\"https://transformer-circuits.pub/2021/framework/index.html\">A Mathematical Framework for Transformer Circuits</a> (Elhage et al., 2021) with 0-, 1-, and 2-layer attention-only transformers trained from scratch, building mechanistic interpretability intuition from the ground up."
       ]
     }
   ],
