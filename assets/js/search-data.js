@@ -16,13 +16,6 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/papers/";
           },
-        },{id: "nav-projects",
-          title: "projects",
-          description: "Things I&#39;m working on, things I&#39;ve worked on, things I&#39;ve completed.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/projects/";
-          },
         },{id: "nav-blog",
           title: "blog",
           description: "",
@@ -37,7 +30,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-fall-2026-checkpoint",
+        },{id: "post-intact-interpretable-activations-for-reward-hacking",
+        
+          title: "IntAct (Interpretable Activations for Reward Hacking)",
+        
+        description: "Short writeup about the first version of IntAct.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/intact/";
+          
+        },
+      },{id: "post-finding-the-edge-of-stability-for-llm-post-training",
+        
+          title: "Finding the Edge of Stability for LLM Post-Training",
+        
+        description: "Revisit of my 6.7960 term project investigating the EoS phenomenon in language model post-training. Null result, but learned a ton.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/edge-of-stability/";
+          
+        },
+      },{id: "post-fall-2026-checkpoint",
         
           title: "fall 2026 checkpoint",
         
@@ -48,55 +63,16 @@ ninja.data = [{
             window.location.href = "/blog/2026/fall-update/";
           
         },
-      },{id: "books-the-alignment-problem",
-          title: 'The Alignment Problem',
-          description: "",
-          section: "Books",handler: () => {
-              window.location.href = "/books/alignment/";
-            },},{id: "books-principles-of-mathematical-analysis",
-          title: 'Principles of Mathematical Analysis',
-          description: "",
-          section: "Books",handler: () => {
-              window.location.href = "/books/baby_rudin/";
-            },},{id: "books-designing-machine-learning-systems",
-          title: 'Designing Machine Learning Systems',
-          description: "",
-          section: "Books",handler: () => {
-              window.location.href = "/books/dmls/";
-            },},{id: "books-probability-theory-and-examples",
-          title: 'Probability Theory and Examples',
-          description: "",
-          section: "Books",handler: () => {
-              window.location.href = "/books/durrett/";
-            },},{id: "books-probabilistic-machine-learning",
-          title: 'Probabilistic Machine Learning',
-          description: "",
-          section: "Books",handler: () => {
-              window.location.href = "/books/probml/";
-            },},{id: "news-writeup-for-my-revisit-of-the-edge-of-stability-in-language-model-post-training-is-live-read-it-in-the-projects-section",
-          title: 'Writeup for my revisit of the Edge of Stability in language model post-training...',
+      },{id: "news-blog-post-detailing-my-revisit-of-the-edge-of-stability-in-language-model-post-training-is-live-read-it-here",
+          title: 'Blog post detailing my revisit of the Edge of Stability in language model...',
           description: "",
           section: "News",},{id: "news-aopatric-toy-transformers-updated-to-include-one-layer-attention-only-walkthrough",
           title: 'aopatric/toy-transformers updated to include one-layer attention-only walkthrough.',
           description: "",
-          section: "News",},{id: "projects-finding-the-edge-of-stability-for-llm-post-training",
-          title: 'Finding the Edge of Stability for LLM Post-Training',
-          description: "Revisit of my 6.7960 term project investigating the EoS phenomenon in language model post-training. Null result, but learned a ton.",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/post-training-EoS/";
-            },},{id: "projects-a-mechanistic-interpretability-testbed-for-reward-hacking",
-          title: 'A Mechanistic Interpretability Testbed for Reward Hacking',
-          description: "An ongoing testbed for mechanistic interpretability tools, built on a reproducible setup for RL-induced reward hacking in Qwen3-4B. Probing, activation patching, and steering, added in stages.",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/qwen-steering/";
-            },},{
-        id: 'social-email',
-        title: 'email',
-        section: 'Socials',
-        handler: () => {
-          window.open("mailto:%61%6F%70%61%74%72%69%63@%61%6C%75%6D.%6D%69%74.%65%64%75", "_blank");
-        },
-      },{
+          section: "News",},{id: "news-made-a-blog-post-on-intact-my-library-for-handling-batch-quantities-of-activations-for-reward-hacking-in-qwen-read-it-here",
+          title: 'Made a blog post on intact, my library for handling batch quantities of...',
+          description: "",
+          section: "News",},{
         id: 'social-github',
         title: 'GitHub',
         section: 'Socials',
@@ -104,11 +80,11 @@ ninja.data = [{
           window.open("https://github.com/aopatric", "_blank");
         },
       },{
-        id: 'social-linkedin',
-        title: 'LinkedIn',
+        id: 'social-email',
+        title: 'email',
         section: 'Socials',
         handler: () => {
-          window.open("https://www.linkedin.com/in/angel-patricio", "_blank");
+          window.open("mailto:%61%6F%70%61%74%72%69%63@%6D%69%74.%65%64%75", "_blank");
         },
       },{
       id: 'light-theme',
