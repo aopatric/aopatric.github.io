@@ -85,8 +85,8 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # Blog
 # -----------------------------------------------------------------------------
 
-blog_name: checkpoints # blog_name will be displayed in your blog page
-blog_description: the git log to my life
+blog_name: my blog # blog_name will be displayed in your blog page
+blog_description: less-formal updates about the things I'm working on
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
@@ -157,6 +157,7 @@ kramdown:
     block:
       line_numbers: false
       start_line: 1
+  toc_levels: 2..4
 
 # Includes & excludes
 include: ["_pages", "_scripts"]
@@ -630,3 +631,8 @@ jsonresume:
   - skills
   - languages
   - interests
+
+# mine
+toc:
+  min_level: 2
+  max_level: 4

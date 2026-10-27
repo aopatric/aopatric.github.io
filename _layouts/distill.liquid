@@ -71,6 +71,9 @@
           <d-contents>
             <nav class="l-text figcaption">
               <h3>Contents</h3>
+              {% if page.toc == true %}
+                {% toc %}
+              {% else %}
               {% for section in page.toc %}
                 <div>
                   <a href="#{{ section.name | slugify }}">{{ section.name }}</a>
@@ -85,6 +88,7 @@
                   </ul>
                 {% endif %}
               {% endfor %}
+              {% endif %}
             </nav>
           </d-contents>
         {% endif %}

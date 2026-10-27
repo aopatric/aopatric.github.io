@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: distill
 title: Finding the Edge of Stability for LLM Post-Training
 date: 2026-09-30
 description: Revisit of my 6.7960 term project investigating the EoS phenomenon in language model post-training. Null result, but learned a ton.

@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: distill
 title: fall 2026 checkpoint
 date: 2026-09-26
 description: What I've been up to since graduating, and what's next.

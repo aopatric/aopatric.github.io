@@ -31,6 +31,15 @@ d-article {
   table {
     color: var(--global-text-color) !important;
   }
+  figcaption,
+  .figcaption,
+  figcaption a {
+    color: var(--global-text-color-light) !important;
+  }
+  figcaption b,
+  figcaption strong {
+    color: var(--global-text-color) !important;
+  }
   h1,
   h2,
   hr,
@@ -118,6 +127,18 @@ d-article {
         list-style-type: none;
         li {
           margin-bottom: 0.25em;
+        }
+      }
+      // auto-generated toc (jekyll-toc): style top level like the hand-written sections
+      ul.section-nav {
+        padding-left: 0;
+        > li {
+          margin-bottom: 0.8em;
+          font-weight: bold;
+          > ul {
+            margin-top: 0.4em;
+            font-weight: normal;
+          }
         }
       }
     }
