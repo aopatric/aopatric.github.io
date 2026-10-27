@@ -23,14 +23,25 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/blog";
           },
-        },{id: "nav-cv",
-          title: "cv",
+        },{id: "nav-resume",
+          title: "resume",
           description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-intact-interpretable-activations-for-reward-hacking",
+        },{id: "post-on-serial-depth-and-monitorability-in-looped-transformers-part-1",
+        
+          title: "On Serial Depth and Monitorability in Looped Transformers, Part 1",
+        
+        description: "Blog post for part 1 of a 2-part study on the computation that happens before a token is emitted in looped transformers, motivating future work in studying the impact that an increased serial depth could have on monitorability.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/recurrent-grokking/";
+          
+        },
+      },{id: "post-intact-interpretable-activations-for-reward-hacking",
         
           title: "IntAct (Interpretable Activations for Reward Hacking)",
         
@@ -52,27 +63,7 @@ ninja.data = [{
             window.location.href = "/blog/2026/edge-of-stability/";
           
         },
-      },{id: "post-fall-2026-checkpoint",
-        
-          title: "fall 2026 checkpoint",
-        
-        description: "What I&#39;ve been up to since graduating, and what&#39;s next.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2026/fall-update/";
-          
-        },
-      },{id: "news-blog-post-detailing-my-revisit-of-the-edge-of-stability-in-language-model-post-training-is-live-read-it-here",
-          title: 'Blog post detailing my revisit of the Edge of Stability in language model...',
-          description: "",
-          section: "News",},{id: "news-aopatric-toy-transformers-updated-to-include-one-layer-attention-only-walkthrough",
-          title: 'aopatric/toy-transformers updated to include one-layer attention-only walkthrough.',
-          description: "",
-          section: "News",},{id: "news-made-a-blog-post-on-intact-my-library-for-handling-batch-quantities-of-activations-for-reward-hacking-in-qwen-read-it-here",
-          title: 'Made a blog post on intact, my library for handling batch quantities of...',
-          description: "",
-          section: "News",},{
+      },{
         id: 'social-github',
         title: 'GitHub',
         section: 'Socials',
