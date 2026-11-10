@@ -1,0 +1,169 @@
+---
+layout: distill
+title: On the Mechanistic Function of the Recurrent Block in Looped Transformers, Part 1
+date: 2026-11-08
+description: Brief results blog post for part 1 of a 2-part study on the nature of the computation that happens inside the looping component of a looped transformer, this time on a task that needs no iterative computation. Motivated by studying the impact of increased serial depth on monitorability. Reproduction code for data and figures is <a href='https://github.com/aopatric/recurrent-grokking'>here</a>.
+authors:
+  - name: Angel Patricio
+    url: "https://aopatric.github.io"
+    affiliations:
+      name: Independent
+tags:
+categories:
+bibliography: 2026-10-23-recurrent-grokking.bib
+---
+
+tl;dr: I take toy-scale versions of two plain looped transformers<d-cite key="dehghani2019universal"></d-cite> that differ in where their norms sit, a Huginn-style looped transformer<d-cite key="geiping2025huginn"></d-cite>, and a one-layer transformer baseline<d-cite key="vaswani2017attention"></d-cite>, train them on 1, 2, and 3-hop modular addition chains mod 113 using the recipe from Nanda et al. (2023)<d-cite key="nanda2023progress"></d-cite>, and measure generalization on up to 6-hop chains. I switch to gradient clipping and learning rate decay late in training to address training instability under the recipe's constant learning rate and high weight decay with AdamW<d-cite key="loshchilov2019adamw"></d-cite>, and observe the mechanistic function of the recurrent components of the resulting looped models. I find that none of the loops work through the chain one operation at a time, instead using even attention from the `=` token to gather inputs, as the one-layer model does, and reading the answer off a clock of the total in all but one trial (which _did_ use a clock at another seed, so this depends on the seed). The loops with a clock also hold up better at 6 hops than the one-layer model (0.88–0.93 accuracy, against 0.60–0.79), though the one-layer model didn't get the clipping and decay. I also find that in the plain loops, a linear probe reads the answer from the loop's state several passes before the model's own output does. More hops delay this probe by anywhere from 2-4 passes, but the output by at most 1. Accuracy at the training depth hides the differences in how the looped models use their recurrent block. The plain loops break when run past their training depth, and the Huginn-style loop even ends training ignoring its carried state, relying only on the re-injected input.
+
+<small>
+This work is accompanied by an in-progress part 2, a contrasting study in a problem setting where there exists no 1-pass shortcut. It additionally motivates further exploration into the development of monitoring tools for understanding _both_ the __intra- and inter-token computation__<d-cite key="skye2026shadow"></d-cite> in looped transformers.
+</small>
+
+<small>
+(A note from me: compute limited how many seeds I could run. The mechanism results for the one-layer model, the Huginn-style loop and the sandwich-norm loop, and the training fix, are at two seeds; the training ablations are at one, with a few baselines repeated at a second, and there was no hyperparameter sweep. The remaining checks are at one seed. I mark each result with its seed count.)
+</small>
+
+<small>
+Disclaimer: still a draft, some sections contain draft prose written w/ Claude.
+</small>
+
+## Foreword: Somewhere to Start
+
+In the [accompanying essay](/blog/2026/recurrent-grokking-essay/) motivating this project in the first place, I argue that the task of monitoring the models built around reasoning with latent thoughts will take tools that read these thoughts itself, not just the model output. Any such tool has to be checked against some ground truth.  In order to trust a measurement instrument, we need to know what we're supposed to read; for a frontier model, we typically don't. A cleaner place to start might be a problem setting where models learn an algorithm we already know.
+
+The one-layer transformer trained on modular addition is one of the best-understood examples in mech interp<d-cite key="nanda2023progress,zhong2023clock"></d-cite>: it adds by representing numbers as rotations about clocks. This project constructs a multi-hop extension of the same task as a natural testbed for comparing what a loop does with its extra depth against the ground truth of standard transformer behavior.
+
+## Background and Experiment Setup
+
+The setup is modified from the same Progress Measures for Grokking<d-cite key="nanda2023progress"></d-cite> paper mentioned earlier. The original setup trains a one-layer transformer with learned positional embeddings and no normalization to predict $(a+b) \bmod 113$, with prompts of the shape `a b = `. The answer is read off at the token `=`. The original approach trains on 30% of the $113^2$ possible input pairs, leaving the other 70% for testing. They use full-batch AdamW<d-cite key="loshchilov2019adamw"></d-cite> with $\lambda=1$. In their work they fully reverse engineer the addition algorithm being used by the model, resulting in the famous "clock" algorithm<d-cite key="nanda2023progress,zhong2023clock"></d-cite>. Since this task is small and the baseline is well-known, it felt like a strong testbed for this study.
+
+### Data
+
+Like the original setup, the model sees a chain of numbers to add and a `=` token. There are no operators in between, and we read off `=` as well. The vocab is thus the 113 numbers 0 through 112, plus `=`.
+
+I used the 1-hop chain data to successfully reproduce the results from Nanda et al.<d-cite key="nanda2023progress"></d-cite>. For 2 and 3 hops, I sample 15,000 training chains each, built from pairs seen in the 1-hop data. Ideally the hop counts get equal samples, but since 1-hop has a maximum of 12,769 combinations and we need a held-out set, I instead let each hop count get its own batch and average the losses with equal weight.
+
+Validating 1-hop chains uses the unseen validation pairs, and 2-/3-hop chains get 2,000 unseen chains of training pairs each. From here on we consider a model "grokked"<d-cite key="power2022grokking"></d-cite> once its validation accuracy, averaged across 1-, 2-, and 3-hop chains, reaches 0.9. To test depth generalization I also built 4-, 5-, and 6-hop chains out of training pairs.
+
+{% include figure.liquid
+   path="assets/img/recurrent-grokking/six-hop-chain.svg"
+   class="img-fluid rounded"
+   zoomable=true
+   alt="Eight token boxes, 50 79 2 18 97 91 79 =, with an arrow to the answer 77. Below them, the running sums 16 18 36 20 111 77, each under the number that produced it."
+   caption="An example 6-hop chain from the depth-extrapolation set. The model sees only the input tokens from up to 3-hop chains during training. Every step of the running sum is a training pair, so length is the only new variable."
+%}
+
+One caveat about the task: since addition is commutative, a chain doesn't necessarily need to be summed left to right. It is also established in the literature<d-cite key="liu2023shortcuts"></d-cite> that shortcuts like this exist for tasks of this kind, and that trained transformers can find them. Nothing here is forcing the looped models to iterate, and this study asks exactly what goes on in the recurrent block when a looped transformer is trained on a task like this.
+
+### Models
+
+I compare three canonical model families in this study, namely the standard transformer<d-cite key="vaswani2017attention"></d-cite>, a plain looped transformer<d-cite key="dehghani2019universal"></d-cite>, and a variation on the Huginn setup<d-cite key="geiping2025huginn"></d-cite> with a dedicated set of prelude/coda layers and state injection. An overview of their differences is below.
+
+| | One-layer | Plain loop | Huginn-style loop |
+|---|---|---|---|
+| Layers | 1 | 1, shared across passes | prelude (1), shared core (1), coda (1) |
+| Passes in training | 1 | 8 | sampled each step, 1–24 (mean 8) |
+| Passes at evaluation | 1 | 8 | 8 |
+| Initial state | n/a | the embedding | random noise, redrawn every forward pass |
+| Input after pass 1 | n/a | none | prelude output re-injected every pass |
+| Norms | none | state-norm: on the state after each pass; sandwich-norm: around each sublayer, plus on the state | sandwich norms |
+| Readout | unembed at `=` | unembed the final state at `=` | coda and a final norm, then unembed |
+| Backprop | full | through all 8 passes | through the last 4 passes |
+
+All models share Nanda et al.'s widths ($d_\text{model} = 128$, 4 heads of size 32, $d_\text{mlp} = 512$), untied embedding and unembedding matrices, and NoPE<d-cite key="kazemnejad2023nope"></d-cite> (no positional embeddings). Norms here are RMSNorms<d-cite key="zhang2019rmsnorm"></d-cite>.
+
+### Training Recipe + Instability
+
+For direct comparison, models were initially trained with the exact recipe from Nanda et al.<d-cite key="nanda2023progress"></d-cite>: I used full-batch AdamW with their learning rate of $10^{-3}$, $\lambda=1$, and $\beta = (0.9, 0.98)$, and a 10-step warmup with a fixed learning rate beyond it. This was intentional so the looped models could be compared directly with the one-layer model the recipe was intended for. I train the standard transformer for 40k steps to replicate their results, and train the rest of the models for 20k steps.
+
+An interesting problem: for the normalized deep and looped models, this Nanda recipe proved to be quite unstable quite quickly. The loss entered a cycle of constant spiking, and the models that were able to grok anyway would lose and regain their accuracy, much like the periodic behavior Lobacheva et al. describe for training with normalization and weight decay<d-cite key="lobacheva2021periodic"></d-cite>. Unshared layers did it too, so this wasn't a loops issue.
+
+What worked for fixing this was a two-phase schedule built on the initial observations from the highly noisy runs. Each run in the suite takes Nanda's recipe to 14k steps before enabling gradient clipping and learning rate decay to control oscillation. This held performance in all 5 two-phase runs that grokked across two different seeds, and ended at a validation accuracy of at least 0.99. The comparison which kept the fixed learning rate did not hold the same way. The schedule also doesn't guarantee grokking. The state-norm loop, despite using this schedule, didn't grok at seed 42 in 20k steps. There was additionally no compute for large hyperparameter sweeps, so all of this holds under this joint recipe only. The mechanism results below use the final checkpoints of these two-phase runs; the one-layer model stays on Nanda's recipe.
+
+Additional ablation results, and an appendix with the ablation figures, are coming in an update to this post.
+
+## Results and Discussion
+
+### Observation 1: Attention Averaging
+
+A good place to start is how the models use their attention to read information from the input. In theory, a loop working through the chain left-to-right would move attention from one token to the next across passes. The figure below shows this isn't what I observed. In all loops, attention from `=` is spread evenly over the entire chain. This is true in every block, pass, head, and chain length. Normalized entropy for this spread is at least 0.999 everywhere, so we're pretty close to about as evenly as the model could possibly spread its attention. This is also not special in the `=` token; in 3-hop chains, every position averages over the tokens it can see through the causal mask. This figure shows the attention maps from `=` in each head of each model, at the first pass from the seed 41 run. The other passes and results from seed 42 look the same.
+
+{% include figure.liquid
+   path="assets/img/recurrent-grokking/attention.png"
+   class="img-fluid rounded"
+   zoomable=true
+   alt="Heatmaps of attention from the = token to each token of the chain, per head, for the one-layer model, both plain loops and the Huginn-style loop, on 3-hop and 6-hop chains. Every loop's weights are even: 0.20 at 3 hops and about 0.12 at 6 hops. The one-layer model's are even over the numbers, with two heads nearly skipping the = token."
+   caption="Attention from <code>=</code> to each token, per head, in each model's first pass (for the loops, the shared block's first pass). Averaged over 1,000 chains at 3 and 6 hops."
+%}
+
+This behavior is closer to what you'd expect from the one-layer model doing this arithmetic. Since attention is the only way to move information from the inputs to the $=$ token in a one-layer model, and since addition is commutative, averaging attention is enough. Where the one-layer model differs is the `=` token itself: some heads actually learn to put little weight on it (around 0.01, against 0.12 for an even split at 6 hops), namely 2 of 4 heads at seed 41 and 3 of 4 at seed 42. The rest weight it as if it were a number, or even a bit more.
+
+So the loops and the one-layer model gather their inputs the same way, with a near-uniform average of the chain: the one-pass shortcut from the setup. Nothing in the loops' attention changes from pass to pass. The rest of the results look at what the models compute from that average, and when.
+
+### Observation 2: A Clock Readout
+
+Once the numbers are averaged at `=`, the model still has to turn them into an answer. Nanda et al.'s one-layer model reads its answer off a clock<d-cite key="nanda2023progress,zhong2023clock"></d-cite>: the logit for each candidate answer $c$ is a sum of $\cos(w(a+b-c))$ over a few key frequencies $w$, which peaks at the right answer. I fit the same form to every model's logits on the 1-hop grid and ask how much of the readout it explains.
+
+{% include figure.liquid
+   path="assets/img/recurrent-grokking/clocks.png"
+   class="img-fluid rounded"
+   zoomable=true
+   alt="Three panels. Left: bars of how concentrated each run's embedding and unembedding are over frequencies; the unembedding is more concentrated in every run but the seed-41 sandwich-norm loop. Middle: the share of logit variance explained by the top k frequencies, which levels off near 5 frequencies for the one-layer model and near 20 for the loops, while the seed-41 sandwich-norm loop stays close to chance. Right: the loss after removing the top k frequencies, which rises toward a uniform guess by about 20 frequencies for the loops."
+   caption="Three measures of how clock-like each run's readout is, on the 1-hop grid."
+%}
+
+The figure measures this three ways. The left panel shows the gini coefficient of each weight matrix's norm over the 56 frequencies (0 if it's spread evenly, 1 if it all sits on one frequency), for the embedding $W_E$ over the input numbers and the unembedding $W_U$ over the answers. The middle panel fits $\cos$ and $\sin$ of $w(a+b-c)$ at the readout's top $k$ frequencies to the logits and shows the share of their variance it explains. The right panel removes those same frequencies from the logits and shows the loss on the training pairs: if the clock carries the answer, the loss should climb to that of a uniform guess, $\ln 113 \approx 4.73$. The dotted lines mark chance: a random matrix's gini on the left, a readout with no clock in the middle, and a uniform guess on the right. The gini coefficient and the loss with the key frequencies removed (the "excluded loss") follow Nanda et al.'s progress measures<d-cite key="nanda2023progress"></d-cite>.
+
+Every run reads its answer off a clock, except one. The one-layer model's clock uses about 5 frequencies: they explain 0.84 and 0.88 of its logits' variance (seeds 41 and 42), and adding more frequencies adds nothing. The loops spread theirs over about 20 frequencies, which explain 0.86 to 0.94. Removing those 20 frequencies from the logits pushes the loops' loss on the training pairs close to that of a uniform guess, so the clock carries the answer rather than just fitting it. (The one-layer model's loss overshoots a uniform guess when its top 5 frequencies are removed, because its remaining logits are large and confidently wrong; that's the scale of its logits, not a bigger clock.) The unembedding is also far more concentrated on a few frequencies than the embedding: a gini of 0.43–0.48 against 0.17–0.32, where a random matrix gives 0.02.
+
+The exception is the sandwich-norm loop at seed 41. Its top 20 frequencies explain only 0.40 of its logits' variance, removing them barely changes its loss, and its unembedding is barely concentrated at all (gini 0.09). It doesn't extrapolate to 6 hops either. Its seed-42 twin has a clock like the others, so which solution the sandwich-norm loop finds depends on the seed. One difference between the two runs: the seed-41 run grokked late, at step 18,800, after the switch to clipping and learning rate decay, while the seed-42 run grokked at step 8,000. Whether that's why it found a different solution is untested.
+
+Only the readout is clearly a clock, though. The embeddings lean toward the readout's frequencies (58–85% of the embedding's squared norm sits on the readout's top 20 frequencies, against 36% for an even spread), but much less sharply than the unembedding, and most MLP neurons don't follow a single frequency. How each model computes the sum before the readout isn't established here.
+
+The clocks also line up with the 6-hop gap from the tl;dr. If a clock came straight from an even average of the chain, it would shrink as the chain gets longer, since averaging more numbers dilutes each one: to 0.38 of its 1-hop size at 6 hops. The one-layer model's clock shrinks a little faster than that, to 0.28 and 0.30, and its 6-hop accuracy is 0.60 and 0.79. The loops' clocks barely shrink, staying at 0.81–0.91 of their 1-hop size, and their 6-hop accuracy is 0.88–0.93. Why the loops' clocks hold up isn't tested; one guess is that their norms rescale the average. The comparison also crosses recipes: the one-layer model was trained on Nanda's recipe for 40k steps, and the loops on the two-phase schedule for 20k.
+
+### Observation 3: Compute Early, Read Late
+
+The loops run their shared block 8 times, so we can stop them after any pass and ask two questions: does the model's output already give the right answer, and is the answer already in the state? For the second, I fit a linear probe<d-cite key="alain2016probes"></d-cite> from the state at `=`, the vector the unembedding reads, to the answer on half the chains, and score it on the other half.
+
+{% include figure.liquid
+   path="assets/img/recurrent-grokking/compute_early.png"
+   class="img-fluid rounded"
+   zoomable=true
+   alt="Accuracy after each of 8 passes for three plain-loop runs. In two runs, a linear probe of the answer is at 0.7 to 0.93 from pass 1, while the model's own output stays near chance for the first few passes and only catches up at pass 6 or 7. In the seed-41 sandwich-norm run the probe rises later, from pass 3, but still ahead of the output."
+   caption="Accuracy of a linear probe and of the model's own output after each pass, for the three plain-loop runs."
+%}
+
+In the figure, each run's probe is in colour and its output in grey, with 1-hop chains as filled circles and 3-hop chains as hollow squares; the dotted line is chance, 1/113. All three are final checkpoints, trained at 8 passes. The starred panel is the seed-41 sandwich-norm loop, the run without a clock.
+
+In the plain loops, the answer is in the state long before the model outputs it. After a single pass at 1 hop, the probe reads the answer with 0.92 accuracy in the state-norm loop (seed 41) and 0.93 in the sandwich-norm loop (seed 42), while the model's own output is at chance. The output only catches up at pass 6 or 7.
+
+More hops make the computation take longer, but not the output. From 1 to 3 hops, the first pass at which the probe reaches 0.9 moves 2–4 passes later (1 → 4, 1 → 5 and 4 → 6 in the three runs), while the output moves by at most one (6 → 6, 7 → 7 and 7 → 8). The output always arrives near the training depth of 8, whatever the chain length. So even though attention looks the same in every pass, the answer takes longer to form on longer chains; the loop doesn't do everything in its first pass.
+
+The seed-41 sandwich-norm loop, the one without a clock, computes late too: its probe after pass 1 reads only 0.15 at 1 hop. But its probe still leads its output.
+
+The Huginn-style loop is left out of the figure, since its probe and output are both at 0.97–1.00 from the first pass. That isn't because its loop is faster. Its prelude computes most of the answer before the loop starts (a probe right after the prelude reads 0.87 and 0.80 at 1 hop, at seeds 41 and 42), and its coda finishes it. As the next section shows, by the end of training it barely uses what it carries between passes.
+
+This is a toy version of the internal monitoring the [essay](/blog/2026/recurrent-grokking-essay/) argues for: in the plain loops, a linear readout of the state sees the answer several passes before the model's output does. The probe only shows that the answer is linearly decodable from the state, not that the model uses it there, but for a monitor, being able to read it early is the point.
+
+### Observation 4: How the Loops Use Their Depth
+
+Every model here is accurate at 8 passes, the depth it's trained and evaluated at (for the Huginn-style loop, the mean of its sampled training depths). The differences show up when the loop runs longer than it was trained for, or when what it carries from pass to pass is replaced.
+
+The plain loops break past their training depth. Their accuracy goes from 0.99–1.00 at pass 8 to 0.00–0.01 by pass 256 (the sandwich-norm loop at two seeds, the state-norm loop at one). In the sandwich-norm loop the state is unstable: a 1% nudge to it after pass 8 grows to the size of the state itself by pass 256. The answer appears near pass 8 and doesn't stay.
+
+The two-phase Huginn-style loop holds: it's still at 1.00 at pass 256 at both seeds, and a 1% nudge to its state shrinks to almost nothing (below $10^{-8}$). It holds, but it has also stopped using its state. Replacing the carried state with fresh noise at every pass leaves its accuracy at 1.00 at both seeds, and the part of its input projection that reads the state has a spectral norm of only 0.06–0.07, against 0.43–0.71 for the part that reads the injected input. Zeroing the injected input instead collapses its outputs on 2-hop chains to one or two distinct answers. So by the end of training, each pass works only from the re-injected input, and every pass computes nearly the same thing.
+
+That wasn't always true during training. At both seeds it still relied on its state at step 16,038, after the switch to clipping and learning rate decay (accuracy with noise as the state: 0.35 and 0.15), and it ignored the state by step 20,000. Before that, its reliance went up and down, and five checkpoints can't place the last change more precisely than "during the decay phase". At seed 42, the Huginn-style run that kept a constant learning rate is the same run until step 14k, and it ends training relying on its state (0.01 with noise as the state). That's a single pair, and clipping and learning rate decay switched on together, so I can't say which of them, if either, is responsible.
+
+Accuracy at the training depth hides all of this. One loop's answer exists only around pass 8, and the other's doesn't depend on what it carries between passes. Checking a looped model's behavior at the depth it was trained at says little about what its loop is doing.
+
+### Discussion
+
+On a task with a one-pass shortcut, sharing a block across passes didn't produce a step-by-step algorithm. Every loop gathered its inputs with the same even average as the one-layer model, and every run but one read its answer off a clock like it. The extra depth still shows up, but in timing rather than in the algorithm: in the plain loops the answer is decodable early, takes longer to form on longer chains, and is read out near the training depth whatever the chain length. For monitoring, that cuts both ways. A linear probe of the state sees the answer passes before the output does, which is the kind of signal an internal monitor would look for. But accuracy at the training depth hid real differences in how the loops use their depth, and a behavioral check at that depth wouldn't have caught them.
+
+This is one small task, with a shortcut the models can take, and small models. Most results are at two seeds, and the state-norm loop and the constant-learning-rate comparison are at one. There was no hyperparameter sweep. The plain and Huginn-style loops differ in several ways at once (prelude and coda, input injection, the random start, sampled depth and truncated backprop), so I can't say which of those causes which behavior, and the one-layer model was trained on a different recipe from the loops. A linear probe shows that the answer is decodable from the state, not that the model uses it. How the sum is computed before the readout, and why the loops' clocks don't dilute, are still open.
+
+The natural next step is a task where the shortcut isn't available. Composing permutations in $S_5$ is the standard example: Liu et al.<d-cite key="liu2023shortcuts"></d-cite> show that, unless a widely believed complexity conjecture fails, a fixed-depth transformer can't solve it for arbitrarily long chains, so the depth a model needs grows with the chain. On related tasks, weight tying has been found to favor serial solutions<d-cite key="zhang2026convergence"></d-cite>, and looped models have been shown to spend successive passes on successive steps of the algorithm<d-cite key="sesodia2026insideloop"></d-cite>. Part 2 runs the same pipeline and probes there, to see whether the computation moves into the loop once the shortcut is gone, and whether the state still shows the answer before the output does.
+
+__hey, what are you doing here! this is a WIP! come back later...__
