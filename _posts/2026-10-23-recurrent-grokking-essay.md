@@ -71,7 +71,7 @@ So... what does that look like?
 
 At the moment, I'm honestly unsure if there's a single answer out there. Worthwhile tools for this job could take any number of shapes.
 
-Some could even act before the model exists at all, like in the data. Data-first approaches to this are already out there<d-cite key="obrien2025deepignorance"></d-cite>, and show potential for more robust alignment of downstream models. These are grounded in the idea that model unlearning is too powerful to rely purely on post-training interventions, and pre-training interventions seem more robust.
+Some could even act before the model exists at all, like in the data. Data-first approaches to this are already out there<d-cite key="obrien2025deepignorance"></d-cite>, and show potential for more robust alignment of downstream models. These are grounded in the finding that safeguards added after training, unlearning included, are easily undone by fine-tuning, while filtering the pretraining data holds up much better against tampering.
 
 Another potential direction is algorithmic improvement at the pre-training stage. The motivation for this comes from the same Neel Nanda post<d-cite key="nanda2026astra"></d-cite> describing the separation between CoT controllability and No-CoT reasoning ability. If we care about ensuring the model is behaving as intended without reliance on the CoT, then maybe it makes sense to ensure the stages of training most impactful on No-CoT computation are well-aligned, as well. As it currently stands, we don't have many methods for doing so at a method level.
 
