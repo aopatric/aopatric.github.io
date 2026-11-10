@@ -30,15 +30,26 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-on-serial-depth-and-monitorability-in-looped-transformers-part-1",
+        },{id: "post-on-the-mechanistic-function-of-the-recurrent-block-in-looped-transformers-part-1",
         
-          title: "On Serial Depth and Monitorability in Looped Transformers, Part 1",
+          title: "On the Mechanistic Function of the Recurrent Block in Looped Transformers, Part 1...",
         
-        description: "Blog post for part 1 of a 2-part study on the computation that happens before a token is emitted in looped transformers, motivating future work in studying the impact that an increased serial depth could have on monitorability.",
+        description: "Brief results blog post for part 1 of a 2-part study on the nature of the computation that happens inside the looping component of a looped transformer, this time on a task that needs no iterative computation. Motivated by studying the impact of increased serial depth on monitorability. Reproduction code for data and figures is here.",
         section: "Posts",
         handler: () => {
           
             window.location.href = "/blog/2026/recurrent-grokking/";
+          
+        },
+      },{id: "post-serial-depth-monitorability-and-interpretability-in-looped-transformers-essay",
+        
+          title: "Serial Depth, Monitorability, and Interpretability in Looped Transformers (Essay)",
+        
+        description: "Accompanying essay motivating my related work (see the part 1 write-up here) focusing on the internals of looped transformers in the broader context of AI safety. Opinions are my own.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/recurrent-grokking-essay/";
           
         },
       },{id: "post-intact-interpretable-activations-for-reward-hacking",
