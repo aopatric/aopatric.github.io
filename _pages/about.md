@@ -2,19 +2,18 @@
 layout: about
 title: about
 permalink: /
-subtitle: MIT AI Grad in ML Research
+subtitle: AI Safety Research
 
 profile:
-  align: right
+  align: left
   image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
-  more_info: >
+  image_circular: true # crops the image to make it circular
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
+social: false # includes social icons at the bottom of the page -> set to false cuz we put them in the nav bar
 
 announcements:
-  enabled: true # includes a list of news items
+  enabled: false # includes a list of news items -> temporarily disabled, we don't have any news items at the moment
   scrollable: true # adds a vertical scroll bar if there are more than 3 news items
   limit: 5 # leave blank to include all the news in the `_news` folder
 
@@ -24,14 +23,10 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi! My name is Angel, and I recently graduated from MIT with a B.S. in AI and Decision Making. I'm currently enrolled in the MEng program at MIT, and I'm using this Fall 2026 semester to work on interpretability for recurrent-depth language models before returning to school to complete my thesis.
+Hi! I'm Angel. I graduated from MIT with a degree in AI and Decision Making back in May and I'm admitted to the M.Eng., planning on getting starting this spring. I'm broadly interested in how we can reliably oversee and align the behavior of super-capable and, in particular, [open](https://arxiv.org/abs/2608.07514) language models. One direction I'm interested in at the moment is monitoring tools that don't rely on the CoT, since our confidence in CoT faithfulness is [slowly diminishing](https://openai.com/index/an-alien-mind/#:~:text=our%20ability%20to%20rely,progressively%20diminishing). The end goal for me is safety; interpretability is just one way to get there, and the way I'm most passionate about.
 
-I'm currently working on a mechanistic understanding of what recurrent-depth (looped) transformers compute within a single token, using multi-hop modular addition, a task with a known [clock algorithm](https://arxiv.org/abs/2301.05217), as ground truth for checking internal monitoring tools. The experiments for part 1 are done, and I'm actively writing up the results: a [draft of the results post](/blog/2026/recurrent-grokking/) is live, along with an [accompanying essay](/blog/2026/recurrent-grokking-essay/) on why serial depth matters for monitorability, and the [code](https://github.com/aopatric/recurrent-grokking) is public. Part 2 will repeat the study on a task with no one-pass shortcut.
+At the moment I'm working on the second part of a 2-part investigation studying the mechanistic function of the recurrent block in a looped transformer. [Part 1](/blog/2026/recurrent-grokking/) asks this question in a canonical problem setting for mechanistic interpretability: addition $\bmod 113$. Since addition is commutative, the task doesn't require a sequential algorithm to be completed. In fact, I observe an algorithm including a single additive step and an answer read out from a global clock-like structure, similar to the one-layer baselines from [Nanda et al. (2023)](https://arxiv.org/abs/2301.05217). Part 2 asks this question on a task with no constant-time shortcut. I additionally wrote an [accompanying essay](/blog/2026/recurrent-grokking-essay) on why I'm interested in serial depth for monitorability. Some of my other recent projects include a recent [revisit](/blog/2026/edge-of-stability) of my previous work on the Edge of Stability for post-training and a small [library](/blog/2026/intact) I built to efficiently sample and manipulate both rollouts and activations from Qwen3-4B for studying reward hacking behaviors.
 
-Some of my other recent projects have included a critical revisit of [my work](https://github.com/aopatric/post-training-EoS) on the Edge of Stability phenomenon for language model post-training, and an experimental [library](https://github.com/aopatric/intact) I built to efficiently sample rollouts and collect activations for studying reward hacking in Qwen3-4B. I used this library as a foundation for several notebook-level experiments in employing patching and probing techniques to detect and mitigate hacking behavior.
+I spent my time as an undergrad between a few different MIT labs, where I worked on a benchmark for spatial reasoning centered around shape reconstruction with origami at CSAIL (which was published long after I left, as [OrigamiBench](https://icml.cc/virtual/2026/68020)), core infrastructure for decentralized and private federated learning at the Media Lab ([SONAR Web](https://dl.acm.org/doi/10.1145/3737899.3768523)), and adapting language modeling techniques to single-cell transcriptomics data at MIT's IMES.
 
-My time as an undergrad was spent across a few different research groups across MIT. I was fortunate enough to help design and prototype a benchmark for spatial reasoning in both neuro-symbolic and language-based models built around the inverse origami problem (later published by the lab as [OrigamiBench](https://icml.cc/virtual/2026/68020)) with Prof. Armando Solar-Lezama's group at CSAIL, contribute core training and communication infrastructure to a decentralized and data-private solution for federated learning ([SONAR Web](https://dl.acm.org/doi/10.1145/3737899.3768523), ACM FLEdge-AI '25, Best Presentation) with the Camera Culture group at the Media Lab, and adapt masked language modeling approaches to single-cell transcriptomics data from the CELLxGENE Census for imputation and classification with the Edelman Lab at IMES.
-
-Outside of my MIT-affiliated work, my personal research interests lie heavily in the interpretability and alignment of highly capable language models, from the very first training step. I have much interest in the existing literature on recurrent-depth language models and their capacity to be latent reasoners. I think a strong tool to decipher these latent thoughts is necessary for the scalable, performant, capable, and most importantly safe models of the future. In that vein, I've also been building up intuition from the ground up in my [toy-transformers](https://github.com/aopatric/toy-transformers) repo, which contains notebooks exploring 0-, 1-, and (soon) 2-layer attention-only transformers in the style of [A Mathematical Framework for Transformer Circuits](https://transformer-circuits.pub/2021/framework/index.html) (Elhage et al., 2021). Feel free to poke around!
-
-When I'm not working on one of the above things, I'm often doing any one of producing or DJing or consuming music, poking around with the latest AI coding tools, or just hanging out with my cat, Cillian. I'm also a fan of MMA and have been training BJJ for a little over a year now. I'm always open to dialogue and I deeply enjoy discussing research topics, so feel free to reach out!
+Outside ML, I'm interested in music (producing, consuming), combat sports, and [my cat](/assets/img/cat.jpg){:target="_blank" rel="noopener"}. Always open to chatting about research, careers, or life in general; feel free to reach out!
