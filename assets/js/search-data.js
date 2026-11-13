@@ -34,7 +34,7 @@ ninja.data = [{
         
           title: "On the Mechanistic Function of the Recurrent Block in Looped Transformers, Part 1...",
         
-        description: "Brief results blog post for part 1 of a 2-part study on the nature of the computation that happens inside the looping component of a looped transformer, this time on a task that needs no iterative computation. Motivated by studying the impact of increased serial depth on monitorability. Reproduction code for data and figures is here.",
+        description: "Results blog post for part 1 of a 2-part study on the nature of the computation that happens inside the looping component of a looped transformer, this time in a setting with a one-pass shortcut. Motivated by studying the impact of increased serial depth on monitorability; code for data and scripts for figures here.",
         section: "Posts",
         handler: () => {
           
